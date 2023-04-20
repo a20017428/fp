@@ -15,7 +15,7 @@ class _SchedulePageState extends State<SchedulePage> {
   late String title;
   final rows = ['', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
   final columns = ['', '第  1節', '第  2節', '第  3節', '第  4節', '第  5節', '第  6節', '第  7節', '第  8節', '第  9節', '第10節', '第11節', '第12節', '第13節', '第14節', '第15節', '第16節'];
-  final time = ["8:10~9:00", "9:10~10:00", "10:10~11:00", "11:10~12:00", "13:10~14:00", "14:10~15:00", "15:10~16:00", "16:10~17:00", "17:10~18:00", "18:10~18:55", "19:00~19:45", "19:50~20:35", "20:40~21:25", "21:30~22:15", "7:10~8:00", "12:10~13:00"];
+  final time = ["0:0~0:0", "8:10~9:00", "9:10~10:00", "10:10~11:00", "11:10~12:00", "13:10~14:00", "14:10~15:00", "15:10~16:00", "16:10~17:00", "17:10~18:00", "18:10~18:55", "19:00~19:45", "19:50~20:35", "20:40~21:25", "21:30~22:15", "7:10~8:00", "12:10~13:00"];
   var now = DateTime.now();
 
 
@@ -40,10 +40,7 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     now = DateTime.now();
-    print("${now.hour.toInt()}:${now.minute.toInt()}");
-    print(int.parse(time[0%7].split('~')[0].split(":")[0]));
-    print(int.parse(time[0%7].split('~')[1].split(":")[0]));
-
+    print(now);
 
     return Scaffold(
       appBar: AppBar(
@@ -107,11 +104,11 @@ class _SchedulePageState extends State<SchedulePage> {
                             width: double.infinity,
                             height: double.infinity,
                             alignment: Alignment.center,
-                            color: now.hour.toInt() >= int.parse(time[(i*7+j-8)%7].split('~')[0].split(":")[0]) &&
-                                now.hour.toInt() <= int.parse(time[(i*7+j-8)%7].split('~')[1].split(":")[0]) ?
+                            color: now.hour*60+now.minute >= int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1]) &&
+                                   now.hour*60+now.minute <= int.parse(time[i].split('~')[1].split(":")[0])*60+int.parse(time[i].split('~')[1].split(":")[1]) ?
                             Colors.redAccent : i%2 == 0 ? Colors.grey.shade300 : Colors.grey.shade100,
                             child: i == 0 && j == 0 ? Container() : Text(
-                              i == 0 ? rows[j] : j == 0 ? columns[i] : Data.schedules[i*7+j-8][0],
+                              i == 0 ? rows[j] : j == 0 ? columns[i] : time[i],
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
@@ -215,7 +212,7 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
               Padding(padding: EdgeInsets.only(bottom: 25),),
               Text(
-                time[idx~/7],
+                time[idx~/7+1],
                 style: TextStyle(fontSize: 20, color: Colors.green),
               ),
             ],
