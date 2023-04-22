@@ -31,6 +31,13 @@ dependencies:
   image_picker:
   path_provider:
 
+  font_awesome_flutter: ^10.4.0
+  cloud_firestore: ^4.5.2
+  firebase_core: ^2.10.0
+  firebase_auth: ^4.4.2
+  email_validator: ^2.1.17
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

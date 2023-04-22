@@ -104,11 +104,12 @@ class _SchedulePageState extends State<SchedulePage> {
                             width: double.infinity,
                             height: double.infinity,
                             alignment: Alignment.center,
-                            color: now.hour*60+now.minute >= int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1]) &&
+                            color: now.hour*60+now.minute+5 >= int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1]) &&
                                    now.hour*60+now.minute <= int.parse(time[i].split('~')[1].split(":")[0])*60+int.parse(time[i].split('~')[1].split(":")[1]) ?
-                            Colors.redAccent : i%2 == 0 ? Colors.grey.shade300 : Colors.grey.shade100,
+                                   Colors.redAccent : i%2 == 0 ?
+                                   Colors.grey.shade300 : Colors.grey.shade100,
                             child: i == 0 && j == 0 ? Container() : Text(
-                              i == 0 ? rows[j] : j == 0 ? columns[i] : time[i],
+                              i == 0 ? rows[j] : j == 0 ? columns[i] : Data.schedules[i*7+j-8][0],
                               style: TextStyle(fontSize: 18),
                             ),
                           ),

@@ -3,10 +3,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:flutter/cupertino.dart';
-import 'package:fp/build_progress.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:fp/data.dart';
+
 
 class SettingPage extends StatefulWidget {
   final String title;
@@ -22,7 +22,6 @@ class _SettingPageState extends State<SettingPage> {
   File? avatarFile;
 
   TextEditingController _textFieldController1 = TextEditingController();
-  TextEditingController _textFieldController2 = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -30,7 +29,6 @@ class _SettingPageState extends State<SettingPage> {
     title = widget.title;
     avatarFile = Data.avatarFile;
     _textFieldController1.text = Data.name == null ? "" : Data.name!;
-    _textFieldController2.text = Data.mail == null ? "" : Data.mail!;
   }
 
   @override
@@ -66,14 +64,14 @@ class _SettingPageState extends State<SettingPage> {
               child: SizedBox(
                 width: 100,
                 height: 100,
-                child: avatarFile == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade300,)
+                child: avatarFile == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade200,)
                     : CircleAvatar(
                   backgroundImage: FileImage(avatarFile!),
                   radius: 50,
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 15),),
+            Padding(padding: EdgeInsets.only(top: 20),),
             SizedBox(
               width: 250,
               height: 60,
@@ -89,22 +87,6 @@ class _SettingPageState extends State<SettingPage> {
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 15),),
-            SizedBox(
-              width: 250,
-              height: 60,
-              child: TextFormField(
-                autofocus: true,
-                controller: _textFieldController2,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(50),
-                ],
-                decoration: InputDecoration(
-                  labelText: 'Mail',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -112,11 +94,10 @@ class _SettingPageState extends State<SettingPage> {
                 SizedBox(
                   width: 120,
                   height: 50,
-                  child: RaisedButton(
+                  child: MaterialButton(
                     onPressed: () {
                       Data.avatarFile = avatarFile;
                       Data.name = _textFieldController1.text;
-                      Data.mail = _textFieldController2.text;
 
                       _textFieldController1.text = '';
                       Navigator.pop(context);
@@ -149,7 +130,7 @@ class _SettingPageState extends State<SettingPage> {
                 SizedBox(
                   width: 120,
                   height: 50,
-                  child: RaisedButton(
+                  child: MaterialButton(
                     onPressed: () {
                       _textFieldController1.text = '';
                       Navigator.pop(context);
@@ -195,7 +176,11 @@ class _SettingPageState extends State<SettingPage> {
 
       if (image == null) return;
 
-      buildProgress(context);
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(child: CircularProgressIndicator()),
+      );
 
       setState((){
         avatarFile = File(image.path);
