@@ -15,8 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> entries = <String>['課表', '', ''];
-  final List<String> entriesRoute = <String>['/schedule', '/schedule', '/schedule'];
+  final List<String> entries = <String>['課表'];
+  final List<String> entriesRoute = <String>['/schedule'];
 
   @override
   void initState() {
@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.topRight,
-              colors: [Colors.tealAccent.shade700, Colors.greenAccent.shade200],
+              colors: [Colors.lightBlueAccent, Colors.indigoAccent.shade200],
             ),
             borderRadius: BorderRadius.all(Radius.circular(50.0)),
           ),

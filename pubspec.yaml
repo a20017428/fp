@@ -36,7 +36,7 @@ dependencies:
   firebase_core: ^2.10.0
   firebase_auth: ^4.4.2
   email_validator: ^2.1.17
-
+  infinity_page_view: ^1.0.0
 
 dev_dependencies:
   flutter_test:

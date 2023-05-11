@@ -256,6 +256,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.3"
+  infinity_page_view:
+    dependency: "direct main"
+    description:
+      name: infinity_page_view
+      sha256: "08848fb4dedaed20543fbac8081802863a40392535dd330c9da5a8c3b59f2a57"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   intl:
     dependency: transitive
     description:
