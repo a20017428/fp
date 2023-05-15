@@ -37,6 +37,7 @@ dependencies:
   firebase_auth: ^4.4.2
   email_validator: ^2.1.17
   infinity_page_view: ^1.0.0
+  flutter_local_notifications: 9.6.0
 
 dev_dependencies:
   flutter_test:

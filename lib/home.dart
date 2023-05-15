@@ -4,6 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:fp/data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:fp/notification.dart';
+import 'package:fp/main.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -22,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    Noti.initialize(flutterLocalNotificationsPlugin);
   }
 
   @override
@@ -123,6 +130,11 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView(
         children: listView(entries.length),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Noti.showBigTextNotification(title: '30分鐘後上課', body: '演算法', fln: flutterLocalNotificationsPlugin);
+        },
       ),
     );
   }
