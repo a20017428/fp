@@ -9,14 +9,12 @@ class Noti{
   }
 
   static Future showBigTextNotification({var id = 0, required String title, required String body, var payload, required FlutterLocalNotificationsPlugin fln}) async {
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        new AndroidNotificationDetails(
-            'channelId',
-            'channelName',
-          playSound: false,
-          importance:  Importance.max,
-          priority: Priority.high,
-        );
+    AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'channelId',
+      'channelName',
+      importance:  Importance.max,
+      priority: Priority.high,
+    );
 
     var not = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: IOSNotificationDetails());
 

@@ -62,11 +62,6 @@ class _SlidePageState extends State<SlidePage> {
                   ),
                 ),
                 child: InkWell(
-                  /*
-                    onTap: (){
-                      showAlertDialog(context, i);
-                    },
-                   */
                     onTap: (){
                       dialogInput(context, i);
                     },
@@ -79,7 +74,7 @@ class _SlidePageState extends State<SlidePage> {
                             Container(
                               alignment: Alignment.center,
                               child: Text(
-                                Data.schedules[idx*7+i][0],
+                                Data.schedules[idx*7+i].split(' ').first,
                                 style: TextStyle(fontSize: 18),
                               ),
                             ),
@@ -114,8 +109,8 @@ class _SlidePageState extends State<SlidePage> {
 
   Future<void> dialogInput(BuildContext context, int i) async {
     print(idx);
-    _textFieldController1.text = Data.schedules[idx*7+i][0];
-    _textFieldController2.text = Data.schedules[idx*7+i][1];
+    _textFieldController1.text = Data.schedules[idx*7+i].split(' ').first;
+    _textFieldController2.text = Data.schedules[idx*7+i].split(' ').last;
     return showDialog(
       context: context,
       builder: (context) {
@@ -149,8 +144,8 @@ class _SlidePageState extends State<SlidePage> {
               ),
               onPressed: () {
                 setState(() {
-                  Data.schedules[idx*7+i][0] = _textFieldController1.text;
-                  Data.schedules[idx*7+i][1] = _textFieldController2.text;
+                  Data.schedules[idx*7+i]
+                    = _textFieldController1.text + ' ' +  _textFieldController2.text;
                 });
 
                 _textFieldController1.text = '';
@@ -178,42 +173,5 @@ class _SlidePageState extends State<SlidePage> {
       },
     );
   }
-
-  showAlertDialog(BuildContext context, int i) {
-    print(i);
-    showDialog(
-      context: context,
-      builder: (context){
-        return AlertDialog(
-          title: Text(
-            Data.schedules[idx*7+i][0],
-            style: TextStyle(fontSize: 22,),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                Data.schedules[idx*7+i][1],
-                style: TextStyle(fontSize: 18),
-              ),
-              Padding(padding: EdgeInsets.only(bottom: 25),),
-              Text(
-                time[i],
-                style: TextStyle(fontSize: 20, color: Colors.green),
-              ),
-            ],
-          ),
-
-          actions: [
-            TextButton(
-              child: Text("Ok", style: TextStyle(fontSize: 18),),
-              onPressed:  () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
 
 }

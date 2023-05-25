@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fp/notification.dart';
 import 'package:fp/main.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fp/database_manager.dart';
 
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -131,10 +132,25 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         children: listView(entries.length),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Noti.showBigTextNotification(title: '30分鐘後上課', body: '演算法', fln: flutterLocalNotificationsPlugin);
-        },
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: "btn1",
+            child: Text('Ntest', style: TextStyle(fontSize: 20)),
+            onPressed: (){
+              Noti.showBigTextNotification(title: '30分鐘後上課', body: '演算法', fln: flutterLocalNotificationsPlugin);
+              },
+          ),
+          FloatingActionButton(
+            heroTag: "btn2",
+            child: Text('Dtest', style: TextStyle(fontSize: 20)),
+            onPressed: (){
+              DataBaseManager().downloadData();
+            },
+          ),
+
+        ],
       ),
     );
   }
