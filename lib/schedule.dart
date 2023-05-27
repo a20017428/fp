@@ -34,7 +34,7 @@ class _SchedulePageState extends State<SchedulePage> {
     super.initState();
 
     title = widget.title;
-    infinityPageController = InfinityPageController(initialPage: (now.weekday-1)%7);
+    infinityPageController = InfinityPageController(initialPage: now.weekday-1);
   }
 
   @override

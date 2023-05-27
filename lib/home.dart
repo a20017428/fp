@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
             heroTag: "btn2",
             child: Text('Dtest', style: TextStyle(fontSize: 20)),
             onPressed: (){
-              DataBaseManager().downloadData();
+              DataBaseManager().uploadData();
             },
           ),
 

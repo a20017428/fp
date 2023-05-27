@@ -14,14 +14,15 @@ class DataBaseManager {
   final user = FirebaseAuth.instance.currentUser;
 
   Future<void> uploadData() async {
-    FirebaseFirestore.instance.collection(user!.uid).doc('schedule').set(
-        {'schedule': Data.schedules});
+    FirebaseFirestore.instance.collection(user!.uid).doc('schedule')
+        .set({'schedule': Data.schedules});
   }
 
   Future<void> downloadData() async {
-    FirebaseFirestore.instance.collection(user!.uid).doc('schedule').get().then((DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      Data.schedules = List.from(data['schedule']);
+    FirebaseFirestore.instance.collection(user!.uid).doc('schedule').get()
+        .then((DocumentSnapshot doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          Data.schedules = List.from(data['schedule']);
     });
   }
 }
