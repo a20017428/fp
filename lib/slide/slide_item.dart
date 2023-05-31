@@ -74,7 +74,7 @@ class _SlidePageState extends State<SlidePage> {
                             Container(
                               alignment: Alignment.center,
                               child: Text(
-                                Data.schedules[idx*7+i].split(' ').first,
+                                Data.schedules[idx*16+i].split(' ').first,
                                 style: TextStyle(fontSize: 18),
                               ),
                             ),
@@ -108,9 +108,9 @@ class _SlidePageState extends State<SlidePage> {
   }
 
   Future<void> dialogInput(BuildContext context, int i) async {
-    print(idx);
-    _textFieldController1.text = Data.schedules[idx*7+i].split(' ').first;
-    _textFieldController2.text = Data.schedules[idx*7+i].split(' ').last;
+    print(Data.schedules);
+    _textFieldController1.text = Data.schedules[idx*16+i].split(' ').first;
+    _textFieldController2.text = Data.schedules[idx*16+i].split(' ').last;
     return showDialog(
       context: context,
       builder: (context) {
@@ -144,7 +144,7 @@ class _SlidePageState extends State<SlidePage> {
               ),
               onPressed: () {
                 setState(() {
-                  Data.schedules[idx*7+i]
+                  Data.schedules[idx*16+i]
                     = _textFieldController1.text + ' ' +  _textFieldController2.text;
                 });
 

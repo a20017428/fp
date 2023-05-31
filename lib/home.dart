@@ -8,6 +8,7 @@ import 'package:fp/notification.dart';
 import 'package:fp/main.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fp/database_manager.dart';
+import 'dart:io';
 
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -28,6 +29,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    DataBaseManager().downloadData('schedule');
+    DataBaseManager().downloadData('url');
+    DataBaseManager().downloadData('name');
 
     Noti.initialize(flutterLocalNotificationsPlugin);
   }
@@ -74,9 +79,9 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Row(
                       children: [
-                        Data.avatarFile == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade200,)
+                        Data.url == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade200,)
                             : CircleAvatar(
-                          backgroundImage: FileImage(Data.avatarFile!),
+                          backgroundImage: NetworkImage(Data.url!),
                           radius: 50,
                         ),
                         Padding(padding: EdgeInsets.only(left: 20),),
@@ -146,7 +151,10 @@ class _HomePageState extends State<HomePage> {
             heroTag: "btn2",
             child: Text('Dtest', style: TextStyle(fontSize: 20)),
             onPressed: (){
-              DataBaseManager().uploadData();
+              DataBaseManager().uploadData('schedule');
+              DataBaseManager().uploadData('url');
+              DataBaseManager().uploadData('name');
+              DataBaseManager().uploadData('holiday');
             },
           ),
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fp/database_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -6,7 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:fp/data.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fp/build_progress.dart';
 
 class SettingPage extends StatefulWidget {
   final String title;
@@ -20,14 +25,23 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   late String title;
   File? avatarFile;
+  TaskSnapshot? uploadTask;
 
   TextEditingController _textFieldController1 = TextEditingController();
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+  final User? user = FirebaseAuth.instance.currentUser;
+
+
   @override
   void initState() {
     super.initState();
 
     title = widget.title;
-    avatarFile = Data.avatarFile;
+    DataBaseManager().downloadData('url');
+    DataBaseManager().downloadData('name');
     _textFieldController1.text = Data.name == null ? "" : Data.name!;
   }
 
@@ -64,9 +78,13 @@ class _SettingPageState extends State<SettingPage> {
               child: SizedBox(
                 width: 100,
                 height: 100,
-                child: avatarFile == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade200,)
+                child: Data.url == null ? avatarFile == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade200,)
                     : CircleAvatar(
                   backgroundImage: FileImage(avatarFile!),
+                  radius: 50,
+                )
+                    : CircleAvatar(
+                  backgroundImage: NetworkImage(Data.url!),
                   radius: 50,
                 ),
               ),
@@ -95,11 +113,17 @@ class _SettingPageState extends State<SettingPage> {
                   width: 120,
                   height: 50,
                   child: MaterialButton(
-                    onPressed: () {
-                      Data.avatarFile = avatarFile;
+                    onPressed: () async {
+                      buildProgress(context);
                       Data.name = _textFieldController1.text;
+                      await uploadImage();
+                      await DataBaseManager().uploadData('url');
+                      await DataBaseManager().uploadData('name');
+
+
 
                       _textFieldController1.text = '';
+                      Navigator.pop(context);
                       Navigator.pop(context);
                       Navigator.pop(context);
                     },
@@ -188,6 +212,25 @@ class _SettingPageState extends State<SettingPage> {
       Navigator.pop(context);
     } on PlatformException catch(e){
       print('Failed ot pick image: $e');
+    }
+  }
+
+  Future uploadImage() async {
+    if (user == null || avatarFile == null) return;
+
+    final fileName = path.basename(avatarFile!.path);
+    final destination = 'files/$fileName';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('file/');
+
+      uploadTask = await ref.putFile(avatarFile!);
+      Data.url = await uploadTask!.ref.getDownloadURL();
+      print('url ${Data.url}');
+    } catch (e) {
+      print('error occured');
     }
   }
 }
