@@ -25,6 +25,7 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   late String title;
   File? avatarFile;
+
   TaskSnapshot? uploadTask;
 
   TextEditingController _textFieldController1 = TextEditingController();
@@ -78,14 +79,9 @@ class _SettingPageState extends State<SettingPage> {
               child: SizedBox(
                 width: 100,
                 height: 100,
-                child: Data.url == null ? avatarFile == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade200,)
-                    : CircleAvatar(
-                  backgroundImage: FileImage(avatarFile!),
-                  radius: 50,
-                )
-                    : CircleAvatar(
-                  backgroundImage: NetworkImage(Data.url!),
-                  radius: 50,
+                child: IconButton(
+                  onPressed: () => pickImage(context),
+                  icon: Icon(Icons.image, size: 60,),
                 ),
               ),
             ),
@@ -105,7 +101,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
               ),
             ),
-            Spacer(),
+            Padding(padding: EdgeInsets.only(top: 30),),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -225,7 +221,6 @@ class _SettingPageState extends State<SettingPage> {
       final ref = firebase_storage.FirebaseStorage.instance
           .ref(destination)
           .child('file/');
-
       uploadTask = await ref.putFile(avatarFile!);
       Data.url = await uploadTask!.ref.getDownloadURL();
       print('url ${Data.url}');

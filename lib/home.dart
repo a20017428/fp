@@ -79,14 +79,14 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Row(
                       children: [
-                        Data.url == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade200,)
+                        Data.url == "" ||  Data.url == null ? CircleAvatar(radius: 50, backgroundColor: Colors.grey.shade200,)
                             : CircleAvatar(
                           backgroundImage: NetworkImage(Data.url!),
                           radius: 50,
                         ),
                         Padding(padding: EdgeInsets.only(left: 20),),
                         Text(
-                          Data.name == null ? '' : Data.name!,
+                          Data.name == "" ||  Data.name == null ? '' : Data.name!,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -137,6 +137,7 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         children: listView(entries.length),
       ),
+      /*
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -157,9 +158,9 @@ class _HomePageState extends State<HomePage> {
               DataBaseManager().uploadData('holiday');
             },
           ),
-
         ],
       ),
+      */
     );
   }
 

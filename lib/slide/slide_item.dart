@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fp/data.dart';
+import 'package:fp/database_manager.dart';
 import 'package:fp/slide/slide.dart';
 
 
@@ -40,6 +41,8 @@ class _SlidePageState extends State<SlidePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(Data.schedules);
+    print('h${idx}');
     return Column(
       children: [
         Text(date[idx], style: TextStyle(fontSize: 24),),
@@ -53,49 +56,51 @@ class _SlidePageState extends State<SlidePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   side: BorderSide(
-                    color: now.hour*60+now.minute+5 >= int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1]) &&
+                    color: now.weekday == idx+1 &&
+                           now.hour*60+now.minute+5 >= int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1]) &&
                            now.hour*60+now.minute <= int.parse(time[i].split('~')[1].split(":")[0])*60+int.parse(time[i].split('~')[1].split(":")[1]) ?
-                           Colors.redAccent : Colors.blueGrey.shade100,
-                    width: now.hour*60+now.minute+5 >= int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1]) &&
+                    Colors.redAccent : Colors.blueGrey.shade100,
+                    width: now.weekday == idx+1 &&
+                           now.hour*60+now.minute+5 >= int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1]) &&
                            now.hour*60+now.minute <= int.parse(time[i].split('~')[1].split(":")[0])*60+int.parse(time[i].split('~')[1].split(":")[1]) ?
-                           2 : 1,
+                    2 : 1,
                   ),
                 ),
                 child: InkWell(
-                    onTap: (){
-                      dialogInput(context, i);
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        color: Colors.grey.shade100,
-                        child: Stack(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                Data.schedules[idx*16+i].split(' ').first,
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.bottomRight,
-                              child: Text(
-                                period[i],
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.bottomCenter,
-                              child: Text(
-                                time[i],
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                          ],
+                  onTap: (){
+                    dialogInput(context, i);
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: Colors.grey.shade100,
+                    child: Stack(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            Data.schedules[idx*16+i].split(' ').first,
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
+                        Container(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            period[i],
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          child: Text(
+                            time[i],
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                ),
 
               ),
             )),
@@ -108,7 +113,7 @@ class _SlidePageState extends State<SlidePage> {
   }
 
   Future<void> dialogInput(BuildContext context, int i) async {
-    print(Data.schedules);
+    print(idx);
     _textFieldController1.text = Data.schedules[idx*16+i].split(' ').first;
     _textFieldController2.text = Data.schedules[idx*16+i].split(' ').last;
     return showDialog(
@@ -145,9 +150,10 @@ class _SlidePageState extends State<SlidePage> {
               onPressed: () {
                 setState(() {
                   Data.schedules[idx*16+i]
-                    = _textFieldController1.text + ' ' +  _textFieldController2.text;
+                  = _textFieldController1.text + ' ' +  _textFieldController2.text;
                 });
 
+                DataBaseManager().uploadData('schedule');
                 _textFieldController1.text = '';
                 _textFieldController2.text = '';
 

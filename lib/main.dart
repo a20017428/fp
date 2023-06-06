@@ -63,15 +63,13 @@ onStart(ServiceInstance service) async {
     service.stopSelf();
   });
 
-  Timer.periodic(const Duration(seconds: 10), (timer) async {
+  Timer.periodic(const Duration(minutes: 1), (timer) async {
     if (service is AndroidServiceInstance) {
       service.setForegroundNotificationInfo(
         title: "My App Service",
         content: "Updated at ${DateTime.now()}",
       );
     }
-
-    print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
 
     service.invoke(
       'update',
@@ -81,17 +79,18 @@ onStart(ServiceInstance service) async {
     );
 
     var now = DateTime.now();
-    final time = ["8:10~9:00", "9:10~10:00", "10:10~11:00", "11:10~12:00", "13:10~14:00", "14:10~15:00", "15:10~16:00", "16:10~17:00", "17:10~18:00", "18:10~18:55", "19:00~19:45", "19:50~20:35", "20:40~21:25", "21:30~22:15", "7:10~8:00", "12:10~13:00"];
+    final time = ["8:00~9:00", "9:10~10:00", "10:10~11:00", "11:10~12:00", "13:10~14:00", "14:10~15:00", "15:10~16:00", "16:10~17:00", "17:10~18:00", "18:10~18:55", "19:00~19:45", "19:50~20:35", "20:40~21:25", "21:30~22:15", "7:10~8:00", "12:10~13:00"];
     //final time = ["8:48~8:17", "9:10~10:00", "10:10~11:00", "11:10~12:00", "13:10~14:00", "14:10~15:00", "15:10~16:00", "16:10~17:00", "17:10~18:00", "18:10~18:55", "19:00~19:45", "19:50~20:35", "20:40~21:25", "21:30~22:15", "7:10~8:00", "12:10~13:00"];
 
     await Firebase.initializeApp();
     await DataBaseManager().downloadData('schedule');
 
     for(int i = 0; i<time.length; ++i){
-      if(Data.schedules[(now.weekday-1)*16+i-1] != "" && now.hour*60+now.minute+30 == int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1])){
+      if(Data.schedules[(now.weekday-1)*16+i] != "" && Data.schedules[(now.weekday-1)*16+i] != Data.schedules[(now.weekday-1)*16+i-1] &&
+          now.hour*60+now.minute+30 == int.parse(time[i].split('~')[0].split(":")[0])*60+int.parse(time[i].split('~')[0].split(":")[1])){
         Noti.showBigTextNotification(
             title: '30分鐘後上課',
-            body: Data.schedules[(now.weekday-1)*16+i-1],
+            body: Data.schedules[(now.weekday-1)*16+i],
             fln: flutterLocalNotificationsPlugin
         );
       }
